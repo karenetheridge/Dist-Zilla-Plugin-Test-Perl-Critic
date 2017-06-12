@@ -19,14 +19,14 @@ In your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This will provide a F<t/author/critic.t> file for use during the "test" and
+This will provide a F<xt/author/critic.t> file for use during the "test" and
 "release" calls of C<dzil>. To use this, make the changes to F<dist.ini>
 above and run one of the following:
 
     dzil test
     dzil release
 
-During these runs, F<t/author/critic.t> will use L<Test::Perl::Critic> to run
+During these runs, F<xt/author/critic.t> will use L<Test::Perl::Critic> to run
 L<Perl::Critic> against your code and by report findings.
 
 This plugin accepts the C<critic_config> option, which specifies your own config
