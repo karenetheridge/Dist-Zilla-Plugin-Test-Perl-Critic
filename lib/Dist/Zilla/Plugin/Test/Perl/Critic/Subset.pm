@@ -1,9 +1,9 @@
+package Dist::Zilla::Plugin::Test::Perl::Critic::Subset;
+# ABSTRACT: Tests to check your code against best practices
 use 5.008;
 use strict 'subs', 'vars';
 use warnings;
 
-package Dist::Zilla::Plugin::Test::Perl::Critic::Subset;
-# ABSTRACT: Tests to check your code against best practices
 #our $VERSION = '3.002';
 
 # VERSION
@@ -125,7 +125,7 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
-=for Pod::Coverage gather_files register_prereqs
+=for Pod::Coverage gather_files register_prereqs munge_files mvp_aliases
 
 =head1 SYNOPSIS
 
