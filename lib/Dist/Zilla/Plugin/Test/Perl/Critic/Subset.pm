@@ -1,10 +1,13 @@
 use 5.008;
-use strict;
+use strict 'subs', 'vars';
 use warnings;
 
-package Dist::Zilla::Plugin::Test::Perl::Critic;
+package Dist::Zilla::Plugin::Test::Perl::Critic::Subset;
 # ABSTRACT: Tests to check your code against best practices
-our $VERSION = '3.002';
+#our $VERSION = '3.002';
+
+# VERSION
+
 use Moose;
 use Path::Tiny;
 use Moose::Util qw( get_all_attribute_values );
@@ -56,7 +59,7 @@ around dump_config => sub {
 
     $config->{+__PACKAGE__} = {
         finder => [ sort @{ $self->finder } ],
-        blessed($self) ne __PACKAGE__ ? ( version => $VERSION ) : (),
+        blessed($self) ne __PACKAGE__ ? ( version => ${__PACKAGE__ . "::VERSION"} ) : (),
     };
     return $config;
 };
@@ -119,6 +122,7 @@ sub register_prereqs {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
 =pod
 
 =for Pod::Coverage gather_files register_prereqs
@@ -153,6 +157,12 @@ Another example of specifying finders, by defining a custom finder (see
 
 
 =head1 DESCRIPTION
+
+B<Fork notice:> This is a temporary fork of
+L<Dist::Zilla::Plugin::Test::Perl::Critic> 3.001 which includes
+L<https://github.com/perlancar/operl-Dist-Zilla-Plugin-Test-Perl-Critic/commit/bd46961d9d7da767f7a431fba13de441db4b6848>
+to add C<finder> and C<files> configuration options. These options let you
+select, include, exclude files to be tested.
 
 This will provide a F<xt/author/critic.t> file for use during the "test" and
 "release" calls of C<dzil>. To use this, make the changes to F<dist.ini>
@@ -191,40 +201,6 @@ L<Dist::Zilla::Plugin::FileFinder::ByName> plugin.
 
 A filename to also test, in addition to any files found earlier. This option can
 be repeated to specify multiple additional files.
-
-=head1 SEE ALSO
-
-You can look for information on this module at:
-
-=for stopwords AnnoCPAN
-
-=over 4
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=item * See open / report bugs
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=item * Mailing-list (same as L<Dist::Zilla>)
-
-L<http://www.listbox.com/subscribe/?list_id=139292>
-
-=item * Git repository
-
-L<http://github.com/jquelin/dist-zilla-plugin-test-perl-critic>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=back
 
 =cut
 
