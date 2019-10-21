@@ -143,7 +143,7 @@ In your F<dist.ini>:
     ;finder = :InstallModules
 
 Another example of specifying finders, by defining a custom finder (see
-<Dist::Zilla::Plugin::FileFinder::ByName> for more details):
+L<Dist::Zilla::Plugin::FileFinder::ByName> for more details):
 
     [FileFinder::ByName / MyFiles]
     dir = lib
