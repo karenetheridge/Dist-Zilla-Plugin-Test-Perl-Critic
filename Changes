@@ -1,3 +1,10 @@
+3.001.001  2019-10-21  Released-By: PERLANCAR; Urgency: low
+
+	   - No functional changes.
+
+	   - Fix POD formatting.
+
+
 3.001.000 2019-10-20  Released-By: PERLANCAR
 
           - First release, forked from Dist::Zilla::Plugin::Test::Perl::Critic
