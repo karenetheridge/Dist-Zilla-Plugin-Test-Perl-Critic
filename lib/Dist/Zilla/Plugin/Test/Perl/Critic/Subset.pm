@@ -135,8 +135,8 @@ In your F<dist.ini>:
     critic_config = perlcritic.rc ; default / relative to project root
 
     ; to add some files
-    ;files = t/mytest.t
-    ;files = t/myothertest.t
+    ;file = t/mytest.t
+    ;file = t/myothertest.t
 
     ; you can also specify finders to include/exclude files
     ;finder = :TestFiles
