@@ -67,6 +67,8 @@ __PACKAGE__->meta->make_immutable;
 
 =for Pod::Coverage gather_files register_prereqs
 
+=for stopwords LICENCE
+
 =head1 SYNOPSIS
 
 In your F<dist.ini>:

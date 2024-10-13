@@ -11,6 +11,8 @@ before register_component => sub {
   warn "!!! [CriticTests] is deprecated and may be removed in the future; replace it with [Test::Perl::Critic]\n";
 };
 
+=for stopwords LICENCE
+
 =head1 SYNOPSIS
 
 THIS MODULE IS DEPRECATED, PLEASE USE
