@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::Test::Perl::Critic - Tests to check your code against best 
 
 =head1 VERSION
 
-version 3.001
+version 3.002
 
 =head1 SYNOPSIS
 
@@ -29,55 +29,33 @@ above and run one of the following:
 During these runs, F<xt/author/critic.t> will use L<Test::Perl::Critic> to run
 L<Perl::Critic> against your code and by report findings.
 
-This plugin accepts the C<critic_config> option, which specifies your own config
-file for L<Perl::Critic>. It defaults to C<perlcritic.rc>, relative to the
-project root. If the file does not exist, L<Perl::Critic> will use its defaults.
+=for Pod::Coverage gather_files register_prereqs munge_file mvp_aliases
 
-This plugin is an extension of L<Dist::Zilla::Plugin::InlineFiles>.
+=for stopwords LICENCE
 
-=for Pod::Coverage gather_files register_prereqs
+=head1 OPTIONS
 
-=head1 SEE ALSO
+=head2 filename
 
-You can look for information on this module at:
+The file name of the test to generate. Defaults to F<xt/author/critic.t>.
 
-=for stopwords AnnoCPAN
+=head2 critic_config
 
-=over 4
+This plugin accepts the C<critic_config> option, which s
+Specifies your own config file for L<Perl::Critic>. It defaults to
+C<perlcritic.rc>, relative to the project root. If the file does not exist,
+L<Perl::Critic> will use its defaults.
 
-=item * Search CPAN
+The option can also be configured using the C<profile> alias.
 
-L<http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Perl-Critic>
+=head2 verbose
 
-=item * See open / report bugs
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=item * Mailing-list (same as L<Dist::Zilla>)
-
-L<http://www.listbox.com/subscribe/?list_id=139292>
-
-=item * Git repository
-
-L<http://github.com/jquelin/dist-zilla-plugin-test-perl-critic>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=back
+If configured, overrides the C<-verbose> option to L<Perl::Critic>.
 
 =head1 SUPPORT
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Perl-Critic>
 (or L<bug-Dist-Zilla-Plugin-Test-Perl-Critic@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-Test-Perl-Critic@rt.cpan.org>).
-
-There is also a mailing list available for users of this distribution, at
-L<http://dzil.org/#mailing-list>.
 
 There is also an irc channel available for users of this distribution, at
 L<C<#distzilla> on C<irc.perl.org>|irc://irc.perl.org/#distzilla>.
@@ -88,7 +66,7 @@ Jerome Quelin
 
 =head1 CONTRIBUTORS
 
-=for stopwords Jérôme Quelin Karen Etheridge Kent Fredric Olivier Mengué Stephen R. Scaffidi Gryphon Shafer Mike Doherty
+=for stopwords Jérôme Quelin Karen Etheridge Graham Knop Kent Fredric Olivier Mengué Gryphon Shafer Stephen R. Scaffidi Mike Doherty
 
 =over 4
 
@@ -102,6 +80,10 @@ Karen Etheridge <ether@cpan.org>
 
 =item *
 
+Graham Knop <haarg@haarg.org>
+
+=item *
+
 Kent Fredric <kentfredric@gmail.com>
 
 =item *
@@ -110,11 +92,11 @@ Olivier Mengué <dolmen@cpan.org>
 
 =item *
 
-Stephen R. Scaffidi <stephen@scaffidi.net>
+Gryphon Shafer <gryphon@goldenguru.com>
 
 =item *
 
-Gryphon Shafer <gryphon@goldenguru.com>
+Stephen R. Scaffidi <stephen@scaffidi.net>
 
 =item *
 
