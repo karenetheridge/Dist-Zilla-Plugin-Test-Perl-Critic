@@ -8,6 +8,9 @@ our $VERSION = '3.002';
 use Moose;
 use Moose::Util qw( get_all_attribute_values );
 
+use Moose::Util::TypeConstraints qw(
+    role_type
+);
 use Dist::Zilla::File::InMemory;
 use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 { installer => method_installer }, '-setup';
@@ -16,6 +19,7 @@ use namespace::autoclean;
 # and when the time comes, treat them like templates
 with qw(
     Dist::Zilla::Role::FileGatherer
+    Dist::Zilla::Role::FileMunger
     Dist::Zilla::Role::TextTemplate
     Dist::Zilla::Role::PrereqSource
 );
@@ -25,6 +29,19 @@ has filename => (
     default => 'xt/author/critic.t',
 );
 
+has _file => (
+    is => 'ro',
+    isa => role_type('Dist::Zilla::Role::File'),
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        return Dist::Zilla::File::InMemory->new(
+            name => $self->filename,
+            content => ${$self->section_data('test-perl-critic')},
+        );
+    },
+);
+
 has critic_config => (
     is      => 'ro',
     isa     => 'Maybe[Str]',
@@ -32,20 +49,8 @@ has critic_config => (
 );
 
 sub gather_files {
-    my ($self) = @_;
-
-    my $data = $self->merged_section_data;
-    return unless $data and %$data;
-
-    my $stash = get_all_attribute_values( $self->meta, $self);
-    $stash->{critic_config} ||= 'perlcritic.rc';
-
-    my $name = $self->filename;
-    my $template = ${$data->{'test-perl-critic'}};
-    $self->add_file( Dist::Zilla::File::InMemory->new({
-        name => $name,
-        content => $self->fill_in_string( $template, $stash )
-    }));
+    my $self = shift;
+    $self->add_file( $self->_file );
 }
 
 sub register_prereqs {
@@ -62,12 +67,25 @@ sub register_prereqs {
     );
 }
 
+sub munge_file {
+    my $self = shift;
+    my ($file) = @_;
+
+    return
+        unless $file == $self->_file;
+
+    my $stash = get_all_attribute_values( $self->meta, $self);
+    $stash->{critic_config} ||= 'perlcritic.rc';
+
+    $file->content( $self->fill_in_string( $file->content, $stash ) );
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
 =pod
 
-=for Pod::Coverage gather_files register_prereqs
+=for Pod::Coverage gather_files register_prereqs munge_file
 
 =for stopwords LICENCE
 
