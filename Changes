@@ -1,6 +1,7 @@
 Revision history for Dist::Zilla::Plugin::Test::Perl::Critic
 
 {{$NEXT}}
+  - Removed old and broken links from Pod
 
 3.001     2017-05-09 22:32:01Z
  - Test::Perl::Critic is now injected into the distribution as a develop prereq
