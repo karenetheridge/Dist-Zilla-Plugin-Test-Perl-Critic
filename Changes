@@ -7,6 +7,7 @@ Revision history for Dist::Zilla::Plugin::Test::Perl::Critic
   - add filename option to customize the generated file name
   - critic_config option will no longer be ignored if the file doesn't exist
   - add verbose option to set Perl::Critic's verbose option
+  - add profile as an alias for the critic_config option
 
 3.001     2017-05-09 22:32:01Z
  - Test::Perl::Critic is now injected into the distribution as a develop prereq

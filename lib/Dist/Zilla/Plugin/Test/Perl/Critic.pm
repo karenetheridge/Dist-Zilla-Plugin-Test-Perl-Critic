@@ -42,6 +42,10 @@ has _file => (
     },
 );
 
+sub mvp_aliases { {
+    profile => 'critic_config',
+} }
+
 has critic_config => (
     is      => 'ro',
     isa     => 'Str',
@@ -118,7 +122,7 @@ __PACKAGE__->meta->make_immutable;
 1;
 =pod
 
-=for Pod::Coverage gather_files register_prereqs munge_file
+=for Pod::Coverage gather_files register_prereqs munge_file mvp_aliases
 
 =for stopwords LICENCE
 
@@ -153,6 +157,8 @@ This plugin accepts the C<critic_config> option, which s
 Specifies your own config file for L<Perl::Critic>. It defaults to
 C<perlcritic.rc>, relative to the project root. If the file does not exist,
 L<Perl::Critic> will use its defaults.
+
+The option can also be configured using the C<profile> alias.
 
 =head2 verbose
 
