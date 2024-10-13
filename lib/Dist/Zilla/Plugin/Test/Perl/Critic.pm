@@ -164,20 +164,6 @@ The option can also be configured using the C<profile> alias.
 
 If configured, overrides the C<-verbose> option to L<Perl::Critic>.
 
-=head1 SEE ALSO
-
-You can look for information on this module at:
-
-=for stopwords AnnoCPAN
-
-=over 4
-
-=item * See open / report bugs
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-Test-Perl-Critic>
-
-=back
-
 =cut
 
 __DATA__
