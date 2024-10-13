@@ -6,7 +6,6 @@ package Dist::Zilla::Plugin::Test::Perl::Critic;
 # ABSTRACT: Tests to check your code against best practices
 our $VERSION = '3.002';
 use Moose;
-use Moose::Util qw( get_all_attribute_values );
 
 use Moose::Util::TypeConstraints qw(
     role_type
@@ -14,6 +13,7 @@ use Moose::Util::TypeConstraints qw(
 use Dist::Zilla::File::InMemory;
 use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 { installer => method_installer }, '-setup';
+use Data::Dumper ();
 use namespace::autoclean;
 
 # and when the time comes, treat them like templates
@@ -44,8 +44,7 @@ has _file => (
 
 has critic_config => (
     is      => 'ro',
-    isa     => 'Maybe[Str]',
-    default => 'perlcritic.rc',
+    isa     => 'Str',
 );
 
 sub gather_files {
@@ -67,6 +66,18 @@ sub register_prereqs {
     );
 }
 
+sub _dumper {
+    my ($value) = @_;
+    local $Data::Dumper::Indent = 1;
+    local $Data::Dumper::Useqq = 1;
+    local $Data::Dumper::Terse = 1;
+    local $Data::Dumper::Sortkeys = 1;
+    local $Data::Dumper::Trailingcomma = 1;
+    my $dump = Data::Dumper::Dumper($value);
+    $dump =~ s{\n\z}{};
+    return $dump;
+}
+
 sub munge_file {
     my $self = shift;
     my ($file) = @_;
@@ -74,10 +85,25 @@ sub munge_file {
     return
         unless $file == $self->_file;
 
-    my $stash = get_all_attribute_values( $self->meta, $self);
-    $stash->{critic_config} ||= 'perlcritic.rc';
+    my $options = {};
+    if (my $profile = $self->critic_config) {
+        $options->{'-profile'} = $profile;
+    }
+    elsif (grep $_->name eq 'perlcritic.rc', @{ $self->zilla->files }) {
+        $options->{'-profile'} = 'perlcritic.rc';
+    }
 
-    $file->content( $self->fill_in_string( $file->content, $stash ) );
+    $file->content(
+        $self->fill_in_string(
+            $file->content,
+            {
+                dist    => \($self->zilla),
+                plugin  => \$self,
+                dumper  => \\&_dumper,
+                options => \$options,
+            }
+        )
+    );
 }
 
 no Moose;
@@ -144,5 +170,5 @@ ___[ test-perl-critic ]___
 use strict;
 use warnings;
 
-use Test::Perl::Critic (-profile => "{{ $critic_config }}") x!! -e "{{ $critic_config }}";
+use Test::Perl::Critic{{ %$options ? ' ' . $dumper->($options) : '' }};
 all_critic_ok();
