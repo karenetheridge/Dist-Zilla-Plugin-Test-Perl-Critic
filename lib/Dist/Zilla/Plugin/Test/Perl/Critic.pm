@@ -47,6 +47,10 @@ has critic_config => (
     isa     => 'Str',
 );
 
+has verbose => (
+    is => 'ro',
+);
+
 sub gather_files {
     my $self = shift;
     $self->add_file( $self->_file );
@@ -86,6 +90,9 @@ sub munge_file {
         unless $file == $self->_file;
 
     my $options = {};
+    if (defined(my $verbose = $self->verbose)) {
+        $options->{'-verbose'} = $verbose;
+    }
     if (my $profile = $self->critic_config) {
         $options->{'-profile'} = $profile;
     }
@@ -146,6 +153,10 @@ This plugin accepts the C<critic_config> option, which s
 Specifies your own config file for L<Perl::Critic>. It defaults to
 C<perlcritic.rc>, relative to the project root. If the file does not exist,
 L<Perl::Critic> will use its defaults.
+
+=head2 verbose
+
+If configured, overrides the C<-verbose> option to L<Perl::Critic>.
 
 =head1 SEE ALSO
 
