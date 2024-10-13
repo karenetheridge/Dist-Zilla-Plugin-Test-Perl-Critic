@@ -4,6 +4,7 @@ Revision history for Dist::Zilla::Plugin::Test::Perl::Critic
   - Removed old and broken links from Pod
   - Test::Perl::Critic is no longer a direct dependency. It is used in the
     generated test, but not by the module itself.
+  - add filename option to customize the generated file name
 
 3.001     2017-05-09 22:32:01Z
  - Test::Perl::Critic is now injected into the distribution as a develop prereq

@@ -20,6 +20,11 @@ with qw(
     Dist::Zilla::Role::PrereqSource
 );
 
+has filename => (
+    is => 'ro',
+    default => 'xt/author/critic.t',
+);
+
 has critic_config => (
     is      => 'ro',
     isa     => 'Maybe[Str]',
@@ -35,15 +40,12 @@ sub gather_files {
     my $stash = get_all_attribute_values( $self->meta, $self);
     $stash->{critic_config} ||= 'perlcritic.rc';
 
-    # NB: This code is a bit generalised really, and could be forked into its
-    # own plugin.
-    for my $name ( keys %$data ){
-        my $template = ${$data->{$name}};
-        $self->add_file( Dist::Zilla::File::InMemory->new({
-            name => $name,
-            content => $self->fill_in_string( $template, $stash )
-        }));
-    }
+    my $name = $self->filename;
+    my $template = ${$data->{'test-perl-critic'}};
+    $self->add_file( Dist::Zilla::File::InMemory->new({
+        name => $name,
+        content => $self->fill_in_string( $template, $stash )
+    }));
 }
 
 sub register_prereqs {
@@ -88,11 +90,18 @@ above and run one of the following:
 During these runs, F<xt/author/critic.t> will use L<Test::Perl::Critic> to run
 L<Perl::Critic> against your code and by report findings.
 
-This plugin accepts the C<critic_config> option, which specifies your own config
-file for L<Perl::Critic>. It defaults to C<perlcritic.rc>, relative to the
-project root. If the file does not exist, L<Perl::Critic> will use its defaults.
+=head1 OPTIONS
 
-This plugin is an extension of L<Dist::Zilla::Plugin::InlineFiles>.
+=head2 filename
+
+The file name of the test to generate. Defaults to F<xt/author/critic.t>.
+
+=head2 critic_config
+
+This plugin accepts the C<critic_config> option, which s
+Specifies your own config file for L<Perl::Critic>. It defaults to
+C<perlcritic.rc>, relative to the project root. If the file does not exist,
+L<Perl::Critic> will use its defaults.
 
 =head1 SEE ALSO
 
@@ -111,7 +120,7 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-Test-Perl-Critic>
 =cut
 
 __DATA__
-___[ xt/author/critic.t ]___
+___[ test-perl-critic ]___
 #!perl
 
 use strict;
