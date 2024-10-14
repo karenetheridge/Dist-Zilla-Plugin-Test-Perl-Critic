@@ -173,5 +173,5 @@ ___[ test-perl-critic ]___
 use strict;
 use warnings;
 
-use Test::Perl::Critic{{ %$options ? ' ' . $dumper->($options) : '' }};
+use Test::Perl::Critic{{ %$options ? ' %{+' . $dumper->($options) . '}' : '' }};
 all_critic_ok();
