@@ -1,6 +1,7 @@
 Revision history for Dist::Zilla::Plugin::Test::Perl::Critic
 
 {{$NEXT}}
+  - fix ignored options (RT#156116)
 
 3.002     2024-10-13 19:34:56Z
   - Removed old and broken links from Pod
