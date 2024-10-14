@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::Test::Perl::Critic - Tests to check your code against best 
 
 =head1 VERSION
 
-version 3.002
+version 3.003
 
 =head1 SYNOPSIS
 
@@ -66,7 +66,7 @@ Jerome Quelin
 
 =head1 CONTRIBUTORS
 
-=for stopwords Jérôme Quelin Karen Etheridge Graham Knop Kent Fredric Olivier Mengué Gryphon Shafer Stephen R. Scaffidi Mike Doherty
+=for stopwords Jérôme Quelin Karen Etheridge Graham Knop Kent Fredric Olivier Mengué Gryphon Shafer Stephen R. Scaffidi Alexander Hartmaier Mike Doherty
 
 =over 4
 
@@ -97,6 +97,10 @@ Gryphon Shafer <gryphon@goldenguru.com>
 =item *
 
 Stephen R. Scaffidi <stephen@scaffidi.net>
+
+=item *
+
+Alexander Hartmaier <abraxxa@cpan.org>
 
 =item *
 
