@@ -17,11 +17,14 @@ use Data::Dumper ();
 use namespace::autoclean;
 
 # and when the time comes, treat them like templates
-with qw(
-    Dist::Zilla::Role::FileGatherer
-    Dist::Zilla::Role::FileMunger
-    Dist::Zilla::Role::TextTemplate
-    Dist::Zilla::Role::PrereqSource
+with (
+    'Dist::Zilla::Role::FileFinderUser' => {
+        default_finders => [],
+    },
+    'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::FileMunger',
+    'Dist::Zilla::Role::TextTemplate',
+    'Dist::Zilla::Role::PrereqSource',
 );
 
 has filename => (
@@ -46,6 +49,10 @@ sub mvp_aliases { {
     profile => 'critic_config',
 } }
 
+sub mvp_multivalue_args { qw(
+    files
+) }
+
 has critic_config => (
     is      => 'ro',
     isa     => 'Str',
@@ -53,6 +60,27 @@ has critic_config => (
 
 has verbose => (
     is => 'ro',
+);
+
+has files => (
+    is => 'ro',
+    isa => 'ArrayRef[Str]',
+);
+
+has all_files => (
+    is => 'ro',
+    lazy => 1,
+    isa => 'Maybe[ArrayRef[Str]]',
+    default => sub {
+        my $self = shift;
+        my $files = $self->files;
+        return undef
+            if !@{ $self->finder } && !$files;
+        return [
+          @{ $files || [] },
+          (map $_->name, @{ $self->found_files }),
+        ];
+    },
 );
 
 sub gather_files {
@@ -112,6 +140,7 @@ sub munge_file {
                 plugin  => \$self,
                 dumper  => \\&_dumper,
                 options => \$options,
+                files   => \$self->all_files,
             }
         )
     );
@@ -164,6 +193,17 @@ The option can also be configured using the C<profile> alias.
 
 If configured, overrides the C<-verbose> option to L<Perl::Critic>.
 
+=head2 files
+
+If specified, will be used as the list of files to check. If neither C<files>
+C<finder> is specified, L<Test::Perl::Critic>'s default behavior of checking
+all files will be used.
+
+=head2 finder
+
+Can be specified to use a L<file finder|Dist::Zilla::Role::FileFinderUser/default_finders>
+to select the files to check, rather than checking all files.
+
 =cut
 
 __DATA__
@@ -174,4 +214,4 @@ use strict;
 use warnings;
 
 use Test::Perl::Critic{{ %$options ? ' %{+' . $dumper->($options) . '}' : '' }};
-all_critic_ok();
+all_critic_ok({{ $files ? '@{' . $dumper->($files) . '}' : '' }});
