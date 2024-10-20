@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::Test::Perl::Critic - Tests to check your code against best 
 
 =head1 VERSION
 
-version 3.003
+version 3.004
 
 =head1 SYNOPSIS
 
@@ -52,6 +52,17 @@ The option can also be configured using the C<profile> alias.
 
 If configured, overrides the C<-verbose> option to L<Perl::Critic>.
 
+=head2 files
+
+If specified, will be used as the list of files to check. If neither C<files>
+C<finder> is specified, L<Test::Perl::Critic>'s default behavior of checking
+all files will be used.
+
+=head2 finder
+
+Can be specified to use a L<file finder|Dist::Zilla::Role::FileFinderUser/default_finders>
+to select the files to check, rather than checking all files.
+
 =head1 SUPPORT
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Perl-Critic>
@@ -66,17 +77,17 @@ Jerome Quelin
 
 =head1 CONTRIBUTORS
 
-=for stopwords Jérôme Quelin Karen Etheridge Graham Knop Kent Fredric Olivier Mengué Gryphon Shafer Stephen R. Scaffidi Alexander Hartmaier Mike Doherty
+=for stopwords Karen Etheridge Jérôme Quelin Graham Knop Kent Fredric Olivier Mengué Gryphon Shafer Stephen R. Scaffidi Alexander Hartmaier Mike Doherty
 
 =over 4
 
 =item *
 
-Jérôme Quelin <jquelin@gmail.com>
+Karen Etheridge <ether@cpan.org>
 
 =item *
 
-Karen Etheridge <ether@cpan.org>
+Jérôme Quelin <jquelin@gmail.com>
 
 =item *
 
