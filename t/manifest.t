@@ -152,7 +152,7 @@ subtest 'files' => sub {
 
     my $critic_test = $tzil->slurp_file("build/$test_name");
     like($critic_test, qr{Test::Perl::Critic}, 'We have a Perl::Critic test');
-    like($critic_test, qr{all_critic_ok\(\s*"lib/My/Module\.pm"},
+    like($critic_test, qr{all_critic_ok\(\@\{\[\s*"lib/My/Module\.pm"},
       'Includes file');
 };
 
@@ -183,7 +183,7 @@ subtest 'finder' => sub {
 
     my $critic_test = $tzil->slurp_file("build/$test_name");
     like($critic_test, qr{Test::Perl::Critic}, 'We have a Perl::Critic test');
-    like($critic_test, qr{all_critic_ok\(\s*"lib/My/Module\.pm"},
+    like($critic_test, qr{all_critic_ok\(\@\{\[\s*"lib/My/Module\.pm"},
       'Includes installed modules');
     unlike($critic_test, qr{inc/My/Include\.pm}, "Doesn't include inc modules");
 };
