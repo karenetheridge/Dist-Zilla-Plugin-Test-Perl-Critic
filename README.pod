@@ -48,6 +48,23 @@ L<Perl::Critic> will use its defaults.
 
 The option can also be configured using the C<profile> alias.
 
+=head2 embed_critic_config
+
+This option causes the plugin to read the profile file specified
+by option C<critic_config> or L<Perl::Critic> default config
+file F<.perlcriticrc> and embed the file into the test
+file F<xt/author/critic.t>.
+
+This option makes it possible to exclude the Perl::Critic config
+file from the distribution because all the configuration is embedded
+into the test file. It also means you can use the standard default
+config file name F<.perlcriticrc> which was difficult before
+because dot files are, by default, left out of the distribution package.
+
+By using the default config file F<.perlcriticrc>, you can run
+C<perlcritic> on the command line and use the same configuration
+without additional command line arguments.
+
 =head2 verbose
 
 If configured, overrides the C<-verbose> option to L<Perl::Critic>.
