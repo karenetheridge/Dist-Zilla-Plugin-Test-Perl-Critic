@@ -1,5 +1,7 @@
 Revision history for Dist::Zilla::Plugin::Test::Perl::Critic
 
+{{$NEXT}}
+
 3.005     2025-10-01 18:30:45Z
   - added option embed_critic_config (Mikko Koivunalho)
 
