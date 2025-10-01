@@ -15,6 +15,7 @@ use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 { installer => method_installer }, '-setup';
 use Data::Dumper ();
 use namespace::autoclean;
+use Path::Tiny qw( path );
 
 # and when the time comes, treat them like templates
 with (
@@ -56,6 +57,12 @@ sub mvp_multivalue_args { qw(
 has critic_config => (
     is      => 'ro',
     isa     => 'Str',
+);
+
+has embed_critic_config => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => sub { 0; },
 );
 
 has verbose => (
@@ -122,10 +129,19 @@ sub munge_file {
         unless $file == $self->_file;
 
     my $options = {};
+    my @conf;
     if (defined(my $verbose = $self->verbose)) {
         $options->{'-verbose'} = $verbose;
     }
-    if (my $profile = $self->critic_config) {
+    if ($self->embed_critic_config) {
+        if (my $profile = $self->critic_config) {
+            @conf = path($profile)->lines_utf8( { chomp => 1, });
+        }
+        else {
+            @conf = path('.perlcriticrc')->lines_utf8( { chomp => 1, });
+        }
+    }
+    elsif (my $profile = $self->critic_config) {
         $options->{'-profile'} = $profile;
     }
     elsif (grep $_->name eq 'perlcritic.rc', @{ $self->zilla->files }) {
@@ -141,6 +157,8 @@ sub munge_file {
                 dumper  => \\&_dumper,
                 options => \$options,
                 files   => \$self->all_files,
+                conf    => \\@conf,
+                embed_critic_config => 0 + $self->embed_critic_config,
             }
         )
     );
@@ -212,6 +230,15 @@ ___[ test-perl-critic ]___
 
 use strict;
 use warnings;
-
-use Test::Perl::Critic{{ %$options ? ' %{+' . $dumper->($options) . '}' : '' }};
-all_critic_ok({{ $files ? '@{' . $dumper->($files) . '}' : '' }});
+{{ $embed_critic_config ?
+      "\n" . 'my @conf = <DATA>;'
+    . "\n" . 'chomp @conf;'
+    . "\n"
+    : ''
+}}
+use Test::Perl::Critic{{ $embed_critic_config ? "\n" . '  q{-profile} => \@conf,' . "\n" : '' }}{{ %$options ? ' %{+' . $dumper->($options) . '}' : '' }};
+all_critic_ok({{ $files ? '@{' . $dumper->($files) . '}' : '' }});{{ $embed_critic_config ?
+      "\n" . '__DATA__'
+    . "\n" . (join qq{\n}, @{$conf})
+    : ''
+}}
